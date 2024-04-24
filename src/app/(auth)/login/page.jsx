@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 
 const login = () => {
   const router = useRouter();
-
   async function handlerLogin(userInfo) {
-    console.log(userInfo.get("email"), userInfo.get("password"));
+    // console.log(userInfo.get("email"), userInfo.get("password"));
     const newUserInfo = {
       email: userInfo.get("email"),
       password: userInfo.get("password"),
@@ -20,7 +19,7 @@ const login = () => {
     if (res.ok) {
       router.push("/todo-list");
     }
-    console.log ("res login",res)
+    console.log("res login", res);
   }
 
   return (

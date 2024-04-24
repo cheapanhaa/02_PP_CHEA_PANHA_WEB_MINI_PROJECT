@@ -1,6 +1,30 @@
+"use client";
 import React from "react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
-export default function register() {
+import { useRouter } from "next/navigation";
+
+const register = () => {
+  const router = useRouter();
+
+  async function handlerRegister(userInfo) {
+    // console.log(userInfo.get("email"), userInfo.get("password"));
+    const newUserInfo = {
+      firstName: userInfo.get("firstName"),
+      lastName: userInfo.get("lastName"),
+      email: userInfo.get("email"),
+      gender: userInfo.get("gender"),
+      profile_url: "string",
+    };
+    const res = await signIn("credentials", {
+      redirect: false,
+      ...newUserInfo,
+    });
+    if (res.ok) {
+      router.push("/login");
+    }
+    console.log("res login", res);
+  }
   return (
     <div class=" flex justify-center">
       <div class=" sm:rounded-lg flex justify-center flex-1 mt-11 py-11">
@@ -8,7 +32,7 @@ export default function register() {
           <div className="flex justify-between">
             <Image src={"/assets/icons/logo.svg"} width={150} height={100} />
           </div>
-          <form>
+          <form action={handlerRegister}>
             <div class="grid gap-6 mb-6 md:grid-cols-2 mt-11 ">
               <div>
                 <label
@@ -19,6 +43,7 @@ export default function register() {
                 </label>
                 <input
                   type="text"
+                  name="firstName"
                   id="first_name"
                   class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
                   placeholder="first name"
@@ -34,6 +59,7 @@ export default function register() {
                 </label>
                 <input
                   type="text"
+                  name="lastName"
                   id="last_name"
                   class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
                   placeholder="last name"
@@ -49,27 +75,31 @@ export default function register() {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   id="company"
                   class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
                   placeholder="example@example.com"
                   required
                 />
               </div>
-              <div>
+              <div className="relative z-0 w-full mb-5 group">
                 <label
-                  for="phone"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Phone number
+                  Gender :
                 </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
-                  placeholder="0123456789"
-                  pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                  required
-                />
+                <select
+                  id="gender"
+                  name="gender"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option value="" disabled selected>
+                    Choose your gender
+                  </option>
+                  <option value="F">Female</option>
+                  <option value="M">Male</option>
+                </select>
               </div>
               <div>
                 <label
@@ -80,6 +110,7 @@ export default function register() {
                 </label>
                 <input
                   type="password"
+                  name="password"
                   id="website"
                   class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
                   placeholder="××××××××××××××"
@@ -96,6 +127,7 @@ export default function register() {
                 </label>
                 <input
                   type="password"
+                  name="comfirmpassword"
                   id="visitors"
                   class="bg-gray-100 border border-gray-200 peer h-10 w-full rounded-md bg-gray-50 px-4 font-thin outline-none drop-shadow-sm transition-all duration-200 ease-in-out text-black"
                   placeholder="××××××××××××××"
@@ -112,9 +144,11 @@ export default function register() {
           </form>
         </div>
         <div className="flex-text-center hidden lg:flex">
-        <Image src={"/assets/icons/sign-up.svg"} width={500} height={50} />
-          </div>
+          <Image src={"/assets/icons/sign-up.svg"} width={500} height={50} />
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default register;
