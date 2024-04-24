@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-export default function FormRegisterComponent() {
+export default function register() {
   return (
     <div class=" flex justify-center">
       <div class=" sm:rounded-lg flex justify-center flex-1 mt-11 py-11">
@@ -112,7 +112,7 @@ export default function FormRegisterComponent() {
           </form>
         </div>
         <div className="flex-text-center hidden lg:flex">
-            <Image src={"/image/register.png"} width={500} height={50} />
+        <Image src={"/assets/icons/sign-up.svg"} width={500} height={50} />
           </div>
       </div>
     </div>
